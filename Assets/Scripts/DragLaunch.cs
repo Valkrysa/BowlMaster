@@ -14,6 +14,12 @@ public class DragLaunch : MonoBehaviour {
         ball = GetComponent<Ball>();
 	}
 
+    public void MoveStart (float amount) {
+        if (!ball.HasLaunched()) {
+            ball.transform.Translate(new Vector3(amount, 0, 0));
+        }
+    }
+
     public void DragStart () {
         // Capture time and postion of drag start
         startSwipeTime = Time.time;
@@ -31,6 +37,8 @@ public class DragLaunch : MonoBehaviour {
 
         Vector3 launchVector = new Vector3(launchSpeedX, 0f, launchSpeedZ);
 
-        ball.Launch(launchVector);
+        if (!ball.HasLaunched()) {
+            ball.Launch(launchVector);
+        }
     }
 }
