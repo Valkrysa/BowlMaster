@@ -5,9 +5,11 @@ using UnityEngine;
 public class Ball : MonoBehaviour {
 
     public Vector3 launchVelocity;
+
     private Rigidbody myRigidBody;
     private AudioSource audioSource;
-    private bool hasLaunched;
+    private bool inPlay;
+    private Vector3 startPosition;
 
 	// Use this for initialization
 	void Start () {
@@ -15,9 +17,9 @@ public class Ball : MonoBehaviour {
         myRigidBody.useGravity = false;
 
         audioSource = GetComponent<AudioSource>();
-        //Launch(launchVelocity);
+        startPosition = transform.position;
 
-        hasLaunched = false;
+        inPlay = false;
     }
 
     // Update is called once per frame
@@ -25,12 +27,21 @@ public class Ball : MonoBehaviour {
 
     }
 
+    public void Reset() {
+        myRigidBody.useGravity = false;
+        myRigidBody.velocity = Vector3.zero;
+        myRigidBody.angularVelocity = Vector3.zero;
+        transform.position = startPosition;
+
+        inPlay = false;
+    }
+
     public bool HasLaunched () {
-        return hasLaunched;
+        return inPlay;
     }
 
     public void Launch (Vector3 velocity) {
-        hasLaunched = true;
+        inPlay = true;
 
         // myRigidBody.AddForce(transform.forward * 100000.0f);
         myRigidBody.useGravity = true;
