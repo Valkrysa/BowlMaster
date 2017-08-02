@@ -7,14 +7,17 @@ public class PinSetter : MonoBehaviour {
 
     public Text standingDisplay;
     public int lastStandingCount = -1;
+    public float distanceToRaise = 40.0f;
 
     private Ball ball;
     private float lastChangeTime;
     private bool ballEnteredBox = false;
+    private Animator animator;
 
 	// Use this for initialization
 	void Start () {
         ball = GameObject.FindObjectOfType<Ball>();
+        animator = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -23,6 +26,36 @@ public class PinSetter : MonoBehaviour {
 
         if (ballEnteredBox) {
             CheckStandingCount();
+        }
+    }
+
+    public void RenewPins () {
+        Debug.Log("makes new pins");
+    }
+
+    public void RaisePins() {
+        foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
+            if (pin.IsStanding()) {
+                Rigidbody rigidBody = pin.GetComponent<Rigidbody>();
+
+                rigidBody.useGravity = false;
+                rigidBody.velocity = Vector3.zero;
+                rigidBody.angularVelocity = Vector3.zero;
+                pin.transform.Translate(new Vector3(0, 0, distanceToRaise));
+            }
+        }
+    }
+
+    public void LowerPins () {
+        foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
+            if (pin.IsStanding()) {
+                Rigidbody rigidBody = pin.GetComponent<Rigidbody>();
+
+                pin.transform.Translate(new Vector3(0, 0, -distanceToRaise));
+                rigidBody.useGravity = true;
+                rigidBody.velocity = Vector3.zero;
+                rigidBody.angularVelocity = Vector3.zero;
+            }
         }
     }
 
