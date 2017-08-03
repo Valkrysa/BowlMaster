@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof(Ball))]
-public class DragLaunch : MonoBehaviour {
+public class BallDragLaunch : MonoBehaviour {
 
     private Ball ball;
     private float startSwipeTime;
@@ -16,7 +16,7 @@ public class DragLaunch : MonoBehaviour {
 
     public void MoveStart (float amount) {
         if (!ball.HasLaunched()) {
-            ball.transform.Translate(new Vector3(amount, 0, 0));
+            ball.transform.Translate(new Vector3(amount, 0, 0), Space.World);
         }
     }
 

@@ -7,7 +7,7 @@ public class PinSetter : MonoBehaviour {
 
     public Text standingDisplay;
     public int lastStandingCount = -1;
-    public float distanceToRaise = 40.0f;
+    public GameObject pinSet;
 
     private Ball ball;
     private float lastChangeTime;
@@ -25,41 +25,28 @@ public class PinSetter : MonoBehaviour {
         standingDisplay.text = CountStanding().ToString();
 
         if (ballEnteredBox) {
-            CheckStandingCount();
+            UpdateStandingCountAndSettle();
         }
     }
 
     public void RenewPins () {
-        Debug.Log("makes new pins");
+        GameObject newPins = Instantiate(pinSet);
+        newPins.transform.position += new Vector3(0, 50, 0);
     }
 
     public void RaisePins() {
         foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
-            if (pin.IsStanding()) {
-                Rigidbody rigidBody = pin.GetComponent<Rigidbody>();
-
-                rigidBody.useGravity = false;
-                rigidBody.velocity = Vector3.zero;
-                rigidBody.angularVelocity = Vector3.zero;
-                pin.transform.Translate(new Vector3(0, 0, distanceToRaise));
-            }
+            pin.RaiseIfStanding();
         }
     }
 
     public void LowerPins () {
         foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
-            if (pin.IsStanding()) {
-                Rigidbody rigidBody = pin.GetComponent<Rigidbody>();
-
-                pin.transform.Translate(new Vector3(0, 0, -distanceToRaise));
-                rigidBody.useGravity = true;
-                rigidBody.velocity = Vector3.zero;
-                rigidBody.angularVelocity = Vector3.zero;
-            }
+            pin.Lower();
         }
     }
 
-    void CheckStandingCount () {
+    void UpdateStandingCountAndSettle () {
         int standingCount = CountStanding();
 
         if (standingCount != lastStandingCount) {
@@ -69,7 +56,7 @@ public class PinSetter : MonoBehaviour {
         }
 
         float changeInTime = Time.time - lastChangeTime;
-        if (changeInTime >= 3) {
+        if (changeInTime >= 3f) {
             PinsHaveSettled();
         }
     }
@@ -80,15 +67,7 @@ public class PinSetter : MonoBehaviour {
         ballEnteredBox = false;
         standingDisplay.color = Color.green;
     }
-
-    void OnTriggerExit (Collider other) {
-        GameObject thingLeft = other.gameObject;
-
-        if (thingLeft.GetComponent<Pin>()) {
-            Destroy(thingLeft);
-        }
-    }
-
+    
     void OnTriggerEnter (Collider other) {
         GameObject thingHit = other.gameObject;
 
