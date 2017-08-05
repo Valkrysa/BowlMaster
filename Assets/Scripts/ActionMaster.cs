@@ -21,7 +21,7 @@ public class ActionMaster {
         }
 
         // handles special cases in the last frame
-        if (bowl == 19 && pins == 10) {
+        if (bowl >= 19 && pins == 10) {
             bowl += 1;
 
             return Action.Reset;
@@ -39,15 +39,15 @@ public class ActionMaster {
             }
         }
 
-        if (pins == 10) {
-            bowl += 2;
-            return Action.EndTurn;
-        }
-
-        if (bowl % 2 != 0) {
-            bowl += 1;
-            return Action.Tidy;
-        } else if (bowl % 2 == 0) {
+        if (bowl % 2 != 0) { // first bowl of frame
+            if (pins == 10) {
+                bowl += 2;
+                return Action.EndTurn;
+            } else {
+                bowl += 1;
+                return Action.Tidy;
+            }
+        } else if (bowl % 2 == 0) { // second bowl of frames 1-9
             bowl += 1;
             return Action.EndTurn;
         }

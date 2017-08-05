@@ -122,4 +122,27 @@ public class ActionMasterTest {
 
         Assert.AreEqual(tidy, actionMaster.Bowl(0));
     }
+
+    // Test by Nathan via comments
+    [Test]
+    public void T10CheckBowlsAfterKnocked10InSecondBowlInFrame () {
+        actionMaster.Bowl(0);
+        actionMaster.Bowl(10);
+        actionMaster.Bowl(5);
+
+        Assert.AreEqual(endTurn, actionMaster.Bowl(1));
+    }
+
+    // Test by Dondi via comments
+    [Test]
+    public void T11CheckForTurkey () {
+        int[] rolls = { 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1, 1,1 };
+        foreach (int roll in rolls) {
+            actionMaster.Bowl(roll);
+        }
+
+        Assert.AreEqual(reset, actionMaster.Bowl(10));
+        Assert.AreEqual(reset, actionMaster.Bowl(10));
+        Assert.AreEqual(endGame, actionMaster.Bowl(10));
+    }
 }
