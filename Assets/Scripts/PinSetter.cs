@@ -6,30 +6,29 @@ using UnityEngine.UI;
 public class PinSetter : MonoBehaviour {
 
     public Text standingDisplay;
-    public int lastStandingCount = -1;
     public GameObject pinSet;
+    public bool ballLeftBox = false;
 
     private Ball ball;
-    private float lastChangeTime;
-    private bool ballEnteredBox = false;
-    private ActionMaster actionMaster;
-    private int lastSettledCount = 10;
     private Animator animator;
+    private ActionMaster actionMaster; // can't allow more than one instance
+    private float lastChangeTime;
+    private int lastSettledCount = 10;
+    private int lastStandingCount = -1;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         ball = GameObject.FindObjectOfType<Ball>();
-
-        animator = GetComponent<Animator>();
-
         actionMaster = new ActionMaster();
+        animator = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
 	void Update () {
         standingDisplay.text = CountStanding().ToString();
 
-        if (ballEnteredBox) {
+        if (ballLeftBox) {
+            standingDisplay.color = Color.red;
             UpdateStandingCountAndSettle();
         }
     }
@@ -87,17 +86,8 @@ public class PinSetter : MonoBehaviour {
 
         ball.Reset();
         lastStandingCount = -1;
-        ballEnteredBox = false;
+        ballLeftBox = false;
         standingDisplay.color = Color.green;
-    }
-    
-    void OnTriggerEnter (Collider other) {
-        GameObject thingHit = other.gameObject;
-
-        if (thingHit.GetComponent<Ball>()) {
-            standingDisplay.color = Color.red;
-            ballEnteredBox = true;
-        }
     }
 
     private int CountStanding () {

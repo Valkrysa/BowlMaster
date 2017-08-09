@@ -9,7 +9,18 @@ public class ActionMaster {
     private int bowl = 1;
     private int[] bowls = new int[21];
 
-    public Action Bowl(int pins) {
+    public static Action NextAction (List<int> pinFalls) {
+        ActionMaster actionMaster = new ActionMaster();
+        Action currentAction = new Action();
+
+        foreach (int pinFall in pinFalls) {
+            currentAction = actionMaster.Bowl(pinFall);
+        }
+
+        return currentAction;
+    }
+
+    public Action Bowl (int pins) {
         if (pins < 0 || pins > 10) {
             throw new UnityException("Invalid pin amount " + pins + " was passed.");
         }

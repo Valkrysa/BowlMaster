@@ -29,6 +29,7 @@ public class Pin : MonoBehaviour {
             myRigidBody.velocity = Vector3.zero;
             myRigidBody.angularVelocity = Vector3.zero;
             transform.Translate(new Vector3(0, distanceToRaise, 0), Space.World);
+            transform.rotation = Quaternion.Euler(new Vector3(270f, 0, 0));
         } 
     }
 

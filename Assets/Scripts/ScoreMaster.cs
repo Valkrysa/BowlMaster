@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreMaster : MonoBehaviour {
+public class ScoreMaster {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public static List<int> ScoreFrames (List<int> rolls) {
+        List<int> frameList = new List<int>();
+
+        return frameList;
+    }
 }
