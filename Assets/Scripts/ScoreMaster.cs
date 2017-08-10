@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreMaster {
+public static class ScoreMaster {
 
     public static List<int> ScoreCumulative (List<int> rolls) {
         List<int> cumulativeScores = new List<int>();
@@ -18,38 +18,27 @@ public class ScoreMaster {
 
     public static List<int> ScoreFrames (List<int> rolls) {
         List<int> frameList = new List<int>();
-        int summation = 0;
-        int framePart = 0;
 
-        foreach (int roll in rolls) {
-            framePart++;
-            summation += roll;
-
-            Debug.Log("-------");
-            Debug.Log(framePart);
-            Debug.Log(roll);
-            Debug.Log(summation);
-
-            if (framePart == 3) {
-                Debug.Log("Ending on frame 3, adding result: " + summation);
-                frameList.Add(summation);
-                framePart = 1;
-                summation = roll;
-            } // ADD THING TO CHECK FIRST INDEX FOR STRIKE BONUS, IF 10 THEN
-
-            if (framePart == 2) {
-                if (summation >= 10) {
-                    // keep going
-                } else {
-                    Debug.Log("Ending on frame 2, adding result: " + summation);
-                    frameList.Add(summation);
-                    framePart = 0;
-                    summation = 0;
-                }
+        // i is the second bowl of a frame in this case
+        for (int i = 1; i < rolls.Count; i += 2) {
+            if (frameList.Count == 10) { // prevent 11th frame score
+                break;
             }
 
+            if (rolls[i - 1] + rolls[i] < 10) { // common frame
+                frameList.Add(rolls[i - 1] + rolls[i]);
+            }
 
+            if (rolls.Count - i <= 1) { // nothing ahead in list
+                break;
+            }
 
+            if (rolls[i - 1] == 10) { // strike bonus
+                i--;
+                frameList.Add(10 + rolls[i + 1] + rolls[i + 2]);
+            } else if (rolls[i - 1] + rolls[i] == 10) { // spare bonus
+                frameList.Add(10 + rolls[i + 1]);
+            }
         }
 
         return frameList;

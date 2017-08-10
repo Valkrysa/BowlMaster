@@ -9,7 +9,6 @@ public class PinSetter : MonoBehaviour {
     
     private Ball ball;
     private Animator animator;
-    private ActionMaster actionMaster; // can't allow more than one instance
     private PinCounter pinCounter;
     
     // Use this for initialization

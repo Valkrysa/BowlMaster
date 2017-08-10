@@ -53,7 +53,6 @@ public class PinCounter : MonoBehaviour {
         int standing = CountStanding();
         int pinFall = lastSettledCount - standing;
         lastSettledCount = standing;
-
         gameManager.Bowl(pinFall);
 
         lastStandingCount = -1;

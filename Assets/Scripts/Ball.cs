@@ -22,11 +22,6 @@ public class Ball : MonoBehaviour {
         inPlay = false;
     }
 
-    // Update is called once per frame
-    void Update () {
-
-    }
-
     public void Reset() {
         myRigidBody.useGravity = false;
         myRigidBody.velocity = Vector3.zero;

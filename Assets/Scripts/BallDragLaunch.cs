@@ -16,7 +16,12 @@ public class BallDragLaunch : MonoBehaviour {
 
     public void MoveStart (float amount) {
         if (!ball.HasLaunched()) {
-            ball.transform.Translate(new Vector3(amount, 0, 0), Space.World);
+            if (
+                amount > 0 && ball.transform.position.x <= 45 ||
+                amount < 0 && ball.transform.position.x >= -45
+            ) {
+                ball.transform.Translate(new Vector3(amount, 0, 0), Space.World);
+            }
         }
     }
 
