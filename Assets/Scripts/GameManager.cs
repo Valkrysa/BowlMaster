@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
+
+    public GameObject resetButton;
 
     private List<int> bowls = new List<int>();
     private PinSetter pinSetter;
@@ -18,8 +21,13 @@ public class GameManager : MonoBehaviour {
 	public void Bowl (int pinFall) {
         try {
             bowls.Add(pinFall);
-            ball.Reset();
-            pinSetter.PerformAction(ActionMaster.NextAction(bowls));
+            ActionMaster.Action nextAction = ActionMaster.NextAction(bowls);
+            if (nextAction == ActionMaster.Action.EndGame) {
+                resetButton.SetActive(true);
+            } else {
+                ball.Reset();
+                pinSetter.PerformAction(nextAction);
+            }
         } catch {
             Debug.LogWarning("Something went horribly wrong in GameManager.Bowl performing bowl action");
         }
@@ -29,5 +37,9 @@ public class GameManager : MonoBehaviour {
         } catch {
             Debug.LogWarning("Something went horribly wrong in GameManager.Bowl with scoreDisplay.FillScoreBoxes");
         }
+    }
+
+    public void ResetGame () {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
